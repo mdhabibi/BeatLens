@@ -1,0 +1,106 @@
+qtdb_record,source_database,source_record_id,split_group_id,split_group_basis,split,sampling_rate_hz,signal_names,q1c_annotation_count,q1c_symbol_counts,has_q2c
+sel100,MIT-BIH Arrhythmia Database,100,MIT-BIH Arrhythmia Database::source-record::100,source_record_only_global_subject_unverified,train,250,MLII|V5,240,(:60;):90;N:30;p:30;t:30,true
+sel102,MIT-BIH Arrhythmia Database,102,MIT-BIH Arrhythmia Database::source-record::102,source_record_only_global_subject_unverified,train,250,V5|V2,595,(:85;):255;N:85;t:85;u:85,true
+sel103,MIT-BIH Arrhythmia Database,103,MIT-BIH Arrhythmia Database::source-record::103,source_record_only_global_subject_unverified,train,250,MLII|V2,300,(:60;):120;N:30;p:30;t:30;u:30,true
+sel104,MIT-BIH Arrhythmia Database,104,MIT-BIH Arrhythmia Database::source-record::104,source_record_only_global_subject_unverified,train,250,V5|V2,458,(:110;):174;N:77;p:17;t:77;u:3,false
+sel114,MIT-BIH Arrhythmia Database,114,MIT-BIH Arrhythmia Database::source-record::114,source_record_only_global_subject_unverified,train,250,V5|MLII,401,(:101;):150;N:50;p:50;t:50,true
+sel116,MIT-BIH Arrhythmia Database,116,MIT-BIH Arrhythmia Database::source-record::116,source_record_only_global_subject_unverified,train,250,MLII|V1,456,(:100;):178;N:50;p:50;t:50;u:28,true
+sel117,MIT-BIH Arrhythmia Database,117,MIT-BIH Arrhythmia Database::source-record::117,source_record_only_global_subject_unverified,train,250,MLII|V2,262,(:60;):101;N:30;p:30;t:30;u:11,true
+sel123,MIT-BIH Arrhythmia Database,123,MIT-BIH Arrhythmia Database::source-record::123,source_record_only_global_subject_unverified,train,250,MLII|V5,298,(:60;):119;N:30;p:30;t:30;u:29,true
+sel14046,MIT-BIH Long-Term ECG Database,14046,MIT-BIH Long-Term ECG Database::source-record::14046,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,250,(:64;):93;N:31;p:31;t:31,false
+sel14157,MIT-BIH Long-Term ECG Database,14157,MIT-BIH Long-Term ECG Database::source-record::14157,source_record_only_global_subject_unverified,validation,250,ECG1|ECG2,250,(:58;):96;N:30;p:28;t:30;u:8,false
+sel14172,MIT-BIH Long-Term ECG Database,14172,MIT-BIH Long-Term ECG Database::source-record::14172,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,600,(:200;):200;N:50;p:50;t:50;u:50,false
+sel15814,MIT-BIH Long-Term ECG Database,15814,MIT-BIH Long-Term ECG Database::source-record::15814,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel16265,MIT-BIH Normal Sinus Rhythm Database,16265,MIT-BIH Normal Sinus Rhythm Database::source-record::16265,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel16272,MIT-BIH Normal Sinus Rhythm Database,16272,MIT-BIH Normal Sinus Rhythm Database::source-record::16272,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel16273,MIT-BIH Normal Sinus Rhythm Database,16273,MIT-BIH Normal Sinus Rhythm Database::source-record::16273,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel16420,MIT-BIH Normal Sinus Rhythm Database,16420,MIT-BIH Normal Sinus Rhythm Database::source-record::16420,source_record_only_global_subject_unverified,validation,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel16483,MIT-BIH Normal Sinus Rhythm Database,16483,MIT-BIH Normal Sinus Rhythm Database::source-record::16483,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel16539,MIT-BIH Normal Sinus Rhythm Database,16539,MIT-BIH Normal Sinus Rhythm Database::source-record::16539,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel16773,MIT-BIH Normal Sinus Rhythm Database,16773,MIT-BIH Normal Sinus Rhythm Database::source-record::16773,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,300,(:60;):120;N:30;p:30;t:30;u:30,false
+sel16786,MIT-BIH Normal Sinus Rhythm Database,16786,MIT-BIH Normal Sinus Rhythm Database::source-record::16786,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel16795,MIT-BIH Normal Sinus Rhythm Database,16795,MIT-BIH Normal Sinus Rhythm Database::source-record::16795,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,269,(:89;):90;N:30;p:30;t:30,false
+sel17152,``sudden death'' patients from BIH,17152,``sudden death'' patients from BIH::source-record::17152,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel17453,MIT-BIH Normal Sinus Rhythm Database,17453,MIT-BIH Normal Sinus Rhythm Database::source-record::17453,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,313,(:93;):110;N:30;p:30;t:30;u:20,false
+sel213,MIT-BIH Arrhythmia Database,213,MIT-BIH Arrhythmia Database::source-record::213,source_record_only_global_subject_unverified,validation,250,MLII|V1,568,(:142;):213;N:71;p:71;t:71,true
+sel221,MIT-BIH Arrhythmia Database,221,MIT-BIH Arrhythmia Database::source-record::221,source_record_only_global_subject_unverified,test,250,MLII|V1,150,(:30;):60;N:30;t:30,true
+sel223,MIT-BIH Arrhythmia Database,223,MIT-BIH Arrhythmia Database::source-record::223,source_record_only_global_subject_unverified,validation,250,MLII|V1,279,(:93;):93;N:31;p:31;t:31,true
+sel230,MIT-BIH Arrhythmia Database,230,MIT-BIH Arrhythmia Database::source-record::230,source_record_only_global_subject_unverified,test,250,MLII|V1,400,(:100;):150;N:50;p:50;t:50,true
+sel231,MIT-BIH Arrhythmia Database,231,MIT-BIH Arrhythmia Database::source-record::231,source_record_only_global_subject_unverified,train,250,MLII|V1,400,(:100;):150;N:50;p:50;t:50,false
+sel232,MIT-BIH Arrhythmia Database,232,MIT-BIH Arrhythmia Database::source-record::232,source_record_only_global_subject_unverified,test,250,MLII|V1,150,(:30;):60;A:30;t:30,false
+sel233,MIT-BIH Arrhythmia Database,233,MIT-BIH Arrhythmia Database::source-record::233,source_record_only_global_subject_unverified,train,250,MLII|V1,240,(:60;):90;N:30;p:30;t:30,false
+sel30,``sudden death'' patients from BIH,30,``sudden death'' patients from BIH::source-record::30,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel301,MIT-BIH ST Change Database,301,MIT-BIH ST Change Database::source-record::301,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel302,MIT-BIH ST Change Database,302,MIT-BIH ST Change Database::source-record::302,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel306,MIT-BIH ST Change Database,306,MIT-BIH ST Change Database::source-record::306,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,288,(:72;):108;N:36;p:36;t:36,false
+sel307,MIT-BIH ST Change Database,307,MIT-BIH ST Change Database::source-record::307,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,266,(:60;):103;N:30;p:30;t:30;u:13,false
+sel308,MIT-BIH ST Change Database,308,MIT-BIH ST Change Database::source-record::308,source_record_only_global_subject_unverified,validation,250,ECG1|ECG2,401,(:101;):150;N:50;p:50;t:50,false
+sel31,``sudden death'' patients from BIH,31,``sudden death'' patients from BIH::source-record::31,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel310,MIT-BIH ST Change Database,310,MIT-BIH ST Change Database::source-record::310,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,210,(:30;):90;N:30;t:30;u:30,false
+sel32,``sudden death'' patients from BIH,32,``sudden death'' patients from BIH::source-record::32,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel33,``sudden death'' patients from BIH,33,``sudden death'' patients from BIH::source-record::33,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel34,``sudden death'' patients from BIH,34,``sudden death'' patients from BIH::source-record::34,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel35,``sudden death'' patients from BIH,35,``sudden death'' patients from BIH::source-record::35,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,93,(:31;):31;N:31,false
+sel36,``sudden death'' patients from BIH,36,``sudden death'' patients from BIH::source-record::36,source_record_only_global_subject_unverified,validation,250,ECG1|ECG2,251,(:63;):94;B:30;N:1;p:1;t:31;u:31,false
+sel37,``sudden death'' patients from BIH,37,``sudden death'' patients from BIH::source-record::37,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,150,(:50;):50;B:20;N:24;Q:6,false
+sel38,``sudden death'' patients from BIH,38,``sudden death'' patients from BIH::source-record::38,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel39,``sudden death'' patients from BIH,39,``sudden death'' patients from BIH::source-record::39,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel40,``sudden death'' patients from BIH,40,``sudden death'' patients from BIH::source-record::40,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel41,``sudden death'' patients from BIH,41,``sudden death'' patients from BIH::source-record::41,source_record_only_global_subject_unverified,validation,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel42,``sudden death'' patients from BIH,42,``sudden death'' patients from BIH::source-record::42,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel43,``sudden death'' patients from BIH,43,``sudden death'' patients from BIH::source-record::43,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel44,``sudden death'' patients from BIH,44,``sudden death'' patients from BIH::source-record::44,source_record_only_global_subject_unverified,validation,250,ECG1|ECG2,238,(:74;):82;N:22;V:8;p:22;t:30,false
+sel45,``sudden death'' patients from BIH,45,``sudden death'' patients from BIH::source-record::45,source_record_only_global_subject_unverified,validation,250,ECG1|ECG2,330,(:90;):120;N:30;p:30;t:30;u:30,false
+sel46,``sudden death'' patients from BIH,46,``sudden death'' patients from BIH::source-record::46,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,267,(:89;):89;N:30;p:29;t:30,false
+sel47,``sudden death'' patients from BIH,47,``sudden death'' patients from BIH::source-record::47,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,360,(:120;):120;N:30;p:30;t:30;u:30,false
+sel48,``sudden death'' patients from BIH,48,``sudden death'' patients from BIH::source-record::48,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel49,``sudden death'' patients from BIH,49,``sudden death'' patients from BIH::source-record::49,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel50,``sudden death'' patients from BIH,50,``sudden death'' patients from BIH::source-record::50,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,254,(:64;):95;N:31;Q:1;t:32;u:31,false
+sel51,``sudden death'' patients from BIH,51,``sudden death'' patients from BIH::source-record::51,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel52,``sudden death'' patients from BIH,52,``sudden death'' patients from BIH::source-record::52,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,270,(:90;):90;N:30;p:30;t:30,false
+sel803,MIT-BIH ST Change Database,803,MIT-BIH ST Change Database::source-record::803,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel808,MIT-BIH ST Change Database,808,MIT-BIH ST Change Database::source-record::808,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,300,(:60;):120;N:30;p:30;t:30;u:30,false
+sel811,MIT-BIH ST Change Database,811,MIT-BIH ST Change Database::source-record::811,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel820,MIT-BIH ST Change Database,820,MIT-BIH ST Change Database::source-record::820,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel821,MIT-BIH ST Change Database,821,MIT-BIH ST Change Database::source-record::821,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,258,(:86;):86;N:30;p:26;t:30,false
+sel840,MIT-BIH ST Change Database,840,MIT-BIH ST Change Database::source-record::840,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,561,(:187;):187;N:70;p:47;t:70,false
+sel847,MIT-BIH ST Change Database,847,MIT-BIH ST Change Database::source-record::847,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,264,(:66;):99;N:33;p:33;t:33,false
+sel853,MIT-BIH ST Change Database,853,MIT-BIH ST Change Database::source-record::853,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel871,MIT-BIH ST Change Database,871,MIT-BIH ST Change Database::source-record::871,source_record_only_global_subject_unverified,test,250,ECG1|ECG2,560,(:140;):210;N:70;p:70;t:70,false
+sel872,MIT-BIH ST Change Database,872,MIT-BIH ST Change Database::source-record::872,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel873,MIT-BIH ST Change Database,873,MIT-BIH ST Change Database::source-record::873,source_record_only_global_subject_unverified,validation,250,ECG1|ECG2,264,(:66;):99;N:33;p:33;t:33,false
+sel883,MIT-BIH ST Change Database,883,MIT-BIH ST Change Database::source-record::883,source_record_only_global_subject_unverified,validation,250,ECG1|ECG2,240,(:60;):90;N:30;p:30;t:30,false
+sel891,MIT-BIH ST Change Database,891,MIT-BIH ST Change Database::source-record::891,source_record_only_global_subject_unverified,train,250,ECG1|ECG2,530,(:130;):200;N:71;p:58;t:71,false
+sele0104,European ST-T Database,e0104,European ST-T Database::source-record::e0104,source_record_only_global_subject_unverified,train,250,D3|D4,248,(:60;):94;N:30;p:30;t:30;u:4,false
+sele0106,European ST-T Database,e0106,European ST-T Database::source-record::e0106,source_record_only_global_subject_unverified,train,250,D3|V3,322,(:90;):116;N:30;p:30;t:30;u:26,false
+sele0107,European ST-T Database,e0107,European ST-T Database::source-record::e0107,source_record_only_global_subject_unverified,train,250,D3|V4,312,(:68;):122;N:34;p:34;t:34;u:20,false
+sele0110,European ST-T Database,e0110,European ST-T Database::source-record::e0110,source_record_only_global_subject_unverified,validation,250,V3|D3,240,(:60;):90;N:30;p:30;t:30,false
+sele0111,European ST-T Database,e0111,European ST-T Database::source-record::e0111,source_record_only_global_subject_unverified,validation,250,D3|V4,300,(:60;):120;N:30;p:30;t:30;u:30,false
+sele0112,European ST-T Database,e0112,European ST-T Database::source-record::e0112,source_record_only_global_subject_unverified,validation,250,D3|V4,500,(:100;):200;N:50;p:50;t:50;u:50,false
+sele0114,European ST-T Database,e0114,European ST-T Database::source-record::e0114,source_record_only_global_subject_unverified,test,250,D3|V4,347,(:107;):120;N:30;p:30;t:30;u:30,false
+sele0116,European ST-T Database,e0116,European ST-T Database::source-record::e0116,source_record_only_global_subject_unverified,test,250,V4|D3,270,(:90;):90;N:30;p:30;t:30,false
+sele0121,European ST-T Database,e0121,European ST-T Database::documented-subject::e0118-e0119-e0120-e0121-e0122,documented_shared_subject,train,250,V4|D3,240,(:60;):90;N:30;p:30;t:30,false
+sele0122,European ST-T Database,e0122,European ST-T Database::documented-subject::e0118-e0119-e0120-e0121-e0122,documented_shared_subject,train,250,V4|D3,298,(:60;):119;N:30;p:30;t:30;u:29,false
+sele0124,European ST-T Database,e0124,European ST-T Database::documented-subject::e0123-e0124-e0125-e0126,documented_shared_subject,train,250,V4|D3,450,(:150;):150;N:50;p:50;t:50,false
+sele0126,European ST-T Database,e0126,European ST-T Database::documented-subject::e0123-e0124-e0125-e0126,documented_shared_subject,train,250,V4|D3,300,(:60;):120;N:30;p:30;t:30;u:30,false
+sele0129,European ST-T Database,e0129,European ST-T Database::documented-subject::e0129-e0133,documented_shared_subject,test,250,D3|V3,240,(:60;):90;N:30;p:30;t:30,false
+sele0133,European ST-T Database,e0133,European ST-T Database::documented-subject::e0129-e0133,documented_shared_subject,test,250,D3|V3,240,(:60;):90;N:30;p:30;t:30,false
+sele0136,European ST-T Database,e0136,European ST-T Database::documented-subject::e0136-e0139,documented_shared_subject,train,250,D3|V4,303,(:97;):103;N:30;p:30;t:30;u:13,false
+sele0166,European ST-T Database,e0166,European ST-T Database::source-record::e0166,source_record_only_global_subject_unverified,train,250,V4|D3,324,(:108;):108;N:36;p:36;t:36,false
+sele0170,European ST-T Database,e0170,European ST-T Database::source-record::e0170,source_record_only_global_subject_unverified,train,250,V4|D3,240,(:60;):90;N:30;p:30;t:30,false
+sele0203,European ST-T Database,e0203,European ST-T Database::source-record::e0203,source_record_only_global_subject_unverified,test,250,CM5|CC5,240,(:60;):90;N:30;p:30;t:30,false
+sele0210,European ST-T Database,e0210,European ST-T Database::source-record::e0210,source_record_only_global_subject_unverified,train,250,CM5|CC5,270,(:90;):90;N:30;p:30;t:30,false
+sele0211,European ST-T Database,e0211,European ST-T Database::source-record::e0211,source_record_only_global_subject_unverified,train,250,CM5|CC5,270,(:90;):90;N:30;p:30;t:30,false
+sele0303,European ST-T Database,e0303,European ST-T Database::source-record::e0303,source_record_only_global_subject_unverified,validation,250,V2-V3|V5,270,(:90;):90;N:30;p:30;t:30,false
+sele0405,European ST-T Database,e0405,European ST-T Database::source-record::e0405,source_record_only_global_subject_unverified,train,250,CM5|mod.V1,240,(:60;):90;N:30;p:30;t:30,false
+sele0406,European ST-T Database,e0406,European ST-T Database::source-record::e0406,source_record_only_global_subject_unverified,test,250,CM5|CC5,264,(:62;):101;N:31;p:31;t:31;u:8,false
+sele0409,European ST-T Database,e0409,European ST-T Database::source-record::e0409,source_record_only_global_subject_unverified,test,250,CM5|CC5,270,(:90;):90;N:30;p:30;t:30,false
+sele0411,European ST-T Database,e0411,European ST-T Database::source-record::e0411,source_record_only_global_subject_unverified,train,250,CM5|CC5,240,(:60;):90;N:30;p:30;t:30,false
+sele0509,European ST-T Database,e0509,European ST-T Database::source-record::e0509,source_record_only_global_subject_unverified,train,250,V1-V2|V4-V5,240,(:60;):90;N:30;p:30;t:30,false
+sele0603,European ST-T Database,e0603,European ST-T Database::source-record::e0603,source_record_only_global_subject_unverified,train,250,CM5|CM2,300,(:60;):120;N:30;p:30;t:30;u:30,false
+sele0604,European ST-T Database,e0604,European ST-T Database::source-record::e0604,source_record_only_global_subject_unverified,train,250,CM2|ML5,300,(:60;):120;N:30;p:30;t:30;u:30,false
+sele0606,European ST-T Database,e0606,European ST-T Database::source-record::e0606,source_record_only_global_subject_unverified,train,250,CM5|ML5,240,(:60;):90;N:30;p:30;t:30,false
+sele0607,European ST-T Database,e0607,European ST-T Database::source-record::e0607,source_record_only_global_subject_unverified,train,250,CM5|CM4,246,(:60;):93;N:30;p:30;t:30;u:3,false
+sele0609,European ST-T Database,e0609,European ST-T Database::source-record::e0609,source_record_only_global_subject_unverified,train,250,CM5|ML5,270,(:90;):90;N:30;p:30;t:30,false
+sele0612,European ST-T Database,e0612,European ST-T Database::source-record::e0612,source_record_only_global_subject_unverified,train,250,CM5|ML5,270,(:90;):90;N:30;p:30;t:30,false
+sele0704,European ST-T Database,e0704,European ST-T Database::source-record::e0704,source_record_only_global_subject_unverified,validation,250,V5|V1,318,(:80;):119;N:30;p:30;t:30;u:29,false

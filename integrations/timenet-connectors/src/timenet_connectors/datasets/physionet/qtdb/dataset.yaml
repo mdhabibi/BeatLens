@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://docs.timenet.ai/schemas/dataset-card-v1.schema.json
+yaml_schema_version: 1
+dataset_id: physionet/qtdb
+dataset_version: 1.0.0
+name: QT Database
+description: >-
+  Two-lead ECG excerpts with selected-beat anchors and sparse first-expert waveform fiducials.
+  Tasks localize observed fiducial types in beat-scoped regions; unmarked events remain unknown.
+license: ODC-By-1.0
+domains:
+  - health
+  - cardiology
+tags:
+  - ecg
+  - waveform-delineation
+  - temporal-localization
+  - physionet
+source_url: https://physionet.org/content/qtdb/1.0.0/

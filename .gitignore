@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local datasets, model weights, and generated experiment outputs
+data/**
+!data/.gitkeep
+models/**
+checkpoints/**
+outputs/**
+
+# Local tooling
+.DS_Store
+.env
