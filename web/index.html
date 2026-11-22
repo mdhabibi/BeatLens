@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore one ECG beat, compare T-peak timing predictions, and inspect what moved the estimate.">
+  <title>BeatLens — ECG Timing Explorer</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="explorer.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar"><a class="brand" href="./">Beat<span>Lens</span></a><nav aria-label="Main"><a href="#explorer">Explorer</a><a href="#process">Process</a><a href="#evaluation">Results</a><a href="#glossary">Glossary</a><a href="https://github.com/mdhabibi/BeatLens">Code</a></nav></header>
+  <main id="main">
+    <section class="intro">
+      <p class="eyebrow">TIMENET HACKATHON 2026</p>
+      <h1>Where did the<br>T wave <em>peak?</em></h1>
+      <p>Follow one ECG beat from a supplied R peak to a model estimate. Then see which parts of the signal moved the prediction.</p>
+      <a class="button" href="#explorer">Explore the beat <span aria-hidden="true">↓</span></a>
+    </section>
+    <section id="explorer" class="panel">
+      <div class="section-header"><div><p class="eyebrow">QT DATABASE · SELE0111 · BEAT 11</p><h2>One beat, two leads</h2></div><p class="source">Saved model output</p></div>
+      <p class="guide">Choose a saved model, switch chart views, and move the time slider to inspect a point. Every model sees the same ECG beat, so the manual annotation stays fixed.</p>
+      <div class="explorer-controls">
+        <label>Saved timing readout
+          <select id="readout">
+            <option value="interaction">Interaction-kernel fusion</option>
+            <option value="separate">Separate-kernel fusion</option>
+            <option value="joint">Joint-kernel fusion</option>
+            <option value="linear">Linear fusion</option>
+            <option value="local">OpenTSLM local patches</option>
+          </select>
+        </label>
+        <label>Inspect time <output id="cursor-value" for="cursor">0 ms</output>
+          <input id="cursor" type="range" min="-150" max="500" step="1" value="0">
+        </label>
+      </div>
+      <div class="metrics">
+        <div><span>R anchor</span><strong>0 <small>ms</small></strong></div>
+        <div class="estimate"><span>Predicted T peak</span><strong id="prediction">—</strong></div>
+        <div class="reference"><span>Annotated T peak</span><strong id="annotation">—</strong></div>
+        <div><span>Timing error · this beat</span><strong id="error">—</strong></div>
+      </div>
+      <div class="mode-picker" aria-label="Choose plot">
+        <button type="button" aria-pressed="true" data-mode="waveform">Waveform</button>
+        <button type="button" aria-pressed="false" data-mode="lime">Temporal LIME</button>
+        <button type="button" aria-pressed="false" data-mode="ig">Integrated Gradients</button>
+      </div>
+      <p id="plot-guide" class="plot-guide"></p>
+      <div id="legend" class="legend"></div>
+      <div id="plot" aria-live="polite">Loading saved ECG example…</div>
+      <p class="axis-label">Milliseconds relative to the supplied R peak</p>
+      <p class="source" id="cursor-reading"></p>
+      <div class="interpretation" id="interpretation" aria-live="polite"></div>
+      <details><summary>What do the quality checks mean?</summary>
+        <p id="quality"></p>
+        <p>LIME weighted R² measures how closely its local approximation matches the model under the tested perturbations. The IG completeness residual checks whether the summed contributions account for the difference between the two predictions. Both checks concern the explanation. Timing accuracy comes from comparing the prediction with the manual annotation.</p>
+      </details>
+      <details><summary>Why can one beat show a 0.05 ms error?</summary>
+        <p>The ECG was sampled at 250 Hz, or once every 4 ms. The timing readout outputs a continuous number, which can land between samples. A tiny difference on one beat does not establish sub-millisecond precision. See <a href="#evaluation">cohort results</a> for typical performance.</p>
+      </details>
+    </section>
+    <section id="process" class="panel report">
+      <p class="eyebrow">HOW WE GOT HERE</p><h2>From annotated ECGs to a timing readout</h2>
+      <details open><summary>Prepare the task in TimeNet</summary><p>The local QTDB connector prototype loaded 105 records and 14,750 annotated landmark-localization tasks. T-peak experiments use a narrower task: estimate the time from a supplied R anchor to one annotated T peak. Lead D3 and lead V4 are two views of the same sampled beat.</p><a href="https://github.com/mdhabibi/BeatLens/blob/main/integrations/timenet-connectors/README.md#validation-status">Connector and validation notes</a></details>
+      <details><summary>Fine-tune and swap the input</summary><p>We used LoRA to fine-tune OpenTSLM on Nebius to generate a sample index. In the matched repeat, mean absolute error was 64.5 ms with the original ECGs and 64.5 ms with ECGs swapped between examples. That test gave us no evidence that the generated index followed the waveform.</p></details>
+      <details><summary>Train a separate numerical readout</summary><p>We combined aligned raw ECG samples with features from a frozen OpenTSLM SoftPrompt waveform encoder. The interaction-kernel readout was fitted on 376 QTDB windows. Across 2,201 QTDB out-of-fold windows it reached 31.38 ms mean absolute error. Swapping the waveforms raised the error to 54.69 ms.</p></details>
+      <details><summary>Check explanations against different references</summary><p>The Streamlit research app computes LIME and Integrated Gradients for a separate PyTorch locator and compares zero and smoothed references. This web explorer replays saved OpenTSLM outputs using a 48 ms Gaussian-smoothed reference. Switch readouts to inspect how the estimate and attributions change on the same beat.</p></details>
+    </section>
+    <section id="evaluation" class="panel report">
+      <p class="eyebrow">EXPERIMENTS</p><h2>How did the models transfer?</h2>
+      <p>Compare mean absolute error (MAE) and large misses on the same windows within each cohort. All windows use supplied R anchors. These development panels were evaluated repeatedly during model design.</p>
+      <div class="table-wrap">
+        <table><caption>Cross-database comparison</caption><thead><tr><th scope="col">Model</th><th scope="col">LUDB MAE</th><th scope="col">MIT-BIH MAE</th><th scope="col">MIT-BIH errors &gt;80 ms</th></tr></thead><tbody>
+          <tr><th scope="row">Timing prior</th><td>30.92 ms</td><td>56.42 ms</td><td>—</td></tr>
+          <tr><th scope="row">Interaction kernel</th><td>18.60 ms</td><td>51.54 ms</td><td>453</td></tr>
+          <tr><th scope="row">Full product kernel</th><td>17.94 ms</td><td>51.93 ms</td><td>443</td></tr>
+          <tr><th scope="row">Waveform-only ranker</th><td>11.08 ms</td><td>50.24 ms</td><td>571</td></tr>
+        </tbody></table>
+      </div>
+      <details open><summary>LUDB · 1,603 windows across 200 records</summary><p>The interaction-kernel readout placed 88.6% of predictions within 40 ms. Compared with separate kernels, its paired MAE change was −0.92 ms (95% interval −1.26 to −0.58 ms). The waveform-only ranker had the lowest mean error in this comparison.</p></details>
+      <details><summary>ECG-ID · single-lead stress test</summary><p>Across 2,835 windows from 90 subjects, the interaction kernel reached 17.38 ms MAE and the full product kernel reached 16.29 ms. The interaction kernel had a slightly higher share within 40 ms (94.0% versus 93.4%).</p></details>
+      <details><summary>MIT-BIH · 2,112 pilot windows across 33 records</summary><p>On records 109 and 214, both OpenTSLM readouts predicted more than 80 ms early on all 48 windows with annotated T peaks after 345 ms. These two recordings were selected for failure analysis.</p></details>
+      <a href="https://github.com/mdhabibi/BeatLens/blob/main/docs/opentslm-feasibility.md">Read the experiment notes</a>
+    </section>
+    <section id="glossary" class="panel">
+      <h2>Glossary</h2>
+      <dl class="glossary">
+        <dt>ECG and lead</dt><dd>An ECG records the heart’s electrical activity. Each lead is a different view of that activity. D3 and V4 are the two leads shown here.</dd>
+        <dt>R anchor and T peak</dt><dd>The supplied R-peak time is zero on every chart. The task is to locate the peak of the following T wave and compare its timing with the manual annotation.</dd>
+        <dt>OpenTSLM, LoRA, and timing readout</dt><dd>OpenTSLM is the time-series model. LoRA adapts a subset of weights and was used in the sample-index pilot. The explorer shows separately trained numerical readouts using features from the frozen pretrained encoder.</dd>
+        <dt>Fusion and kernel</dt><dd>Fusion combines encoder features and raw ECG samples. A kernel is a similarity function used by the timing regressor. The readouts differ in how they combine those similarities.</dd>
+        <dt>Temporal LIME and Integrated Gradients</dt><dd>LIME fits a simple approximation around one beat using short segments blurred in different combinations. Integrated Gradients attributes the prediction change from a smoothed reference to the original input.</dd>
+        <dt>MAE and errors over 80 ms</dt><dd>Mean absolute error averages the size of timing misses in a cohort. Errors over 80 ms count large misses. A model can have a lower average and still make more large misses.</dd>
+        <dt>QTDB, LUDB, ECG-ID, and MIT-BIH</dt><dd>QTDB supplied training and development examples. LUDB, ECG-ID, and the MIT-BIH pilot tested transfer across databases.</dd>
+      </dl>
+    </section>
+  </main>
+  <footer><span>Dr. Mahdi Habibi · Dr. Sdjad Sadeghi</span><span>Research prototype · <a href="https://physionet.org/content/qtdb/1.0.0/">PhysioNet QT Database v1.0.0</a> · <a href="https://opendatacommons.org/licenses/by/1-0/">ODC-By 1.0</a></span></footer>
+</body>
+</html>

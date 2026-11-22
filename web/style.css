@@ -1,0 +1,75 @@
+:root {
+  color-scheme: dark;
+  --bg: #170e14;
+  --surface: #251720;
+  --line: #553440;
+  --text: #fff2f3;
+  --muted: #dfbfc7;
+  --accent: #ff8297;
+  --reference: #89e2cd;
+  --prediction: #ff8495;
+  font: 16px/1.6 "Avenir Next", system-ui, sans-serif;
+}
+* { box-sizing: border-box }
+html { scroll-behavior: smooth }
+body { margin: 0; background: radial-gradient(ellipse at 70% 0, #592235, transparent 37rem), var(--bg); color: var(--text) }
+a { color: var(--accent); text-underline-offset: .25em }
+button, .button { font: inherit }
+a:focus-visible, button:focus-visible { outline: 2px solid white; outline-offset: 4px }
+.topbar, main, footer { width: min(1120px, calc(100% - 40px)); margin-inline: auto }
+.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line) }
+.brand { color: var(--text); font-weight: 850; font-size: 1.3rem; text-decoration: none }
+.brand span, em { color: var(--accent) }
+nav { display: flex; gap: clamp(.85rem, 3vw, 2rem) }
+nav a { color: var(--text); text-decoration: none }
+.intro { padding: clamp(3rem, 9vw, 7rem) 0 3rem }
+.eyebrow { font-size: .73rem; font-weight: 780; letter-spacing: .14em; color: var(--accent); margin: 0 0 .45rem }
+h1, h2 { margin: 0; line-height: 1.04; letter-spacing: -.055em }
+h1 { font-size: clamp(3.35rem, 10vw, 7.3rem) }
+h2 { font-size: clamp(1.7rem, 4vw, 2.8rem) }
+.intro > p:not(.eyebrow), .report > p:not(.eyebrow) { max-width: 64ch; color: var(--muted) }
+.intro > p:not(.eyebrow) { font-size: clamp(1.05rem, 2vw, 1.3rem) }
+.button { display: inline-flex; gap: 1.5rem; border-radius: .55rem; background: var(--accent); color: #2d101a; padding: .6rem 1rem; text-decoration: none; font-weight: 750 }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 1.2rem; padding: clamp(1rem, 4vw, 2.5rem); margin-bottom: 1.4rem; scroll-margin-top: 1rem }
+.section-header { display: flex; flex-wrap: wrap; gap: .6rem 1.5rem; justify-content: space-between; align-items: center }
+.source, .axis-label { color: var(--muted); font-size: .82rem; margin: 0 }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: .65rem; margin: 1.5rem 0 }
+.metrics div { background: var(--bg); padding: .7rem .85rem; border-radius: .65rem }
+.metrics span, small { color: var(--muted); font-size: .78rem }
+.metrics strong { display: block; font-size: clamp(1.3rem, 4vw, 2rem); font-variant-numeric: tabular-nums }
+.estimate { color: var(--prediction) }
+.reference { color: var(--reference) }
+.mode-picker, .legend { display: flex; flex-wrap: wrap; gap: .5rem 1rem }
+.mode-picker { margin-bottom: 1rem }
+.mode-picker button { background: transparent; color: var(--text); border: 1px solid #805365; border-radius: .45rem; padding: .35rem .7rem; cursor: pointer }
+.mode-picker button[aria-pressed=true] { background: var(--accent); color: #2d101a; border-color: var(--accent) }
+.legend { font-size: .8rem; color: var(--muted) }
+.legend b { margin-right: .25rem }
+#plot { min-height: 10rem }
+#plot svg { width: 100%; display: block }
+.axis-label { text-align: center }
+.interpretation { margin-top: 1rem; border-left: 3px solid var(--accent); padding: .2rem .8rem; max-width: 85ch }
+.table-wrap { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; margin-top: 1rem; text-align: left }
+td, th { padding: .65rem; border-bottom: 1px solid var(--line); vertical-align: top }
+caption { text-align: left; color: var(--muted); font-size: .85rem }
+footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .65rem 2rem; padding: 1rem 0 2rem; color: var(--muted); font-size: .83rem }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
+.explorer-controls { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; margin-top: 1.15rem }
+.explorer-controls label { display: grid; align-content: start; gap: .3rem; color: var(--muted); font-size: .82rem; min-width: min(100%, 14rem) }
+.explorer-controls select { max-width: 100%; color: var(--text); background: var(--bg); border: 1px solid #805365; border-radius: .45rem; padding: .45rem; font: inherit }
+.explorer-controls input { width: 100%; accent-color: var(--accent); margin: 0 }
+.explorer-controls output { color: var(--accent); font-variant-numeric: tabular-nums }
+details { border-top: 1px solid var(--line); padding: .8rem 0; margin-top: .75rem }
+summary { color: var(--text); font-weight: 720; cursor: pointer }
+details p { color: var(--muted); max-width: 85ch }
+
+.skip-link { position: absolute; top: .5rem; left: .5rem; background: var(--bg); padding: .5rem; transform: translateY(-200%) }
+.skip-link:focus { transform: none }
+nav { flex-wrap: wrap }
+.guide, .plot-guide { color: var(--muted); max-width: 76ch }
+.plot-guide { margin: .4rem 0 .75rem; font-size: .9rem }
+#plot { background: var(--bg); border-radius: .65rem; margin-top: .5rem; padding: .35rem }
+#cursor-reading { margin-top: .5rem }
+.glossary dt { font-weight: 720; margin-top: .75rem }
+.glossary dd { color: var(--muted); margin: .16rem 0 0 }
