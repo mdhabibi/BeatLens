@@ -5,10 +5,7 @@ BeatLens is a research workbench for locating the **T-wave peak** in a two-chann
 [Experiments](docs/opentslm-feasibility.md) · [TimeNet connector](integrations/timenet-connectors/README.md) · [MIT License](LICENSE)
 
 ## Demo
-
-[![Watch the BeatLens demo for the TimeNet Hackathon 2026](https://i.ytimg.com/vi/xKQMgWyghEw/hqdefault.jpg)](https://youtu.be/xKQMgWyghEw)
-
-[Watch on YouTube](https://youtu.be/xKQMgWyghEw)
+https://github.com/user-attachments/assets/710f9f75-2466-489d-ab03-85f88b7485a2
 
 ## Results
 
@@ -20,7 +17,11 @@ All experiments below use supplied R anchors. Mean absolute error (MAE) is measu
 | OpenTSLM interaction-kernel readout shown in the demo | 18.60 ms | 453 |
 | Waveform-only candidate ranker | 11.08 ms | 571 |
 
-The waveform-only ranker had the lowest average error on LUDB. The OpenTSLM readout made fewer large misses on the MIT-BIH pilot. The [beat-level audit](docs/opentslm-feasibility.md#beat-level-audit-on-mit-bih-records-109-and-214) shows examples where both OpenTSLM variants placed late peaks too early.
+The waveform-only ranker had the lowest 
+
+https://github.com/user-attachments/assets/4bee4cf4-bf72-49f4-b424-a186e15c8c93
+
+average error on LUDB. The OpenTSLM readout made fewer large misses on the MIT-BIH pilot. The [beat-level audit](docs/opentslm-feasibility.md#beat-level-audit-on-mit-bih-records-109-and-214) shows examples where both OpenTSLM variants placed late peaks too early.
 
 ## Models and explanations
 
