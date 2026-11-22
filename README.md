@@ -8,7 +8,10 @@ BeatLens is a research workbench for locating the **T-wave peak** in a two-chann
 
 
 
-Uploading BeatLens_demo_for_GitHub_README.mp4…
+
+
+https://github.com/user-attachments/assets/df26bf68-bdc5-4685-8fe8-abaa89551a89
+
 
 
 
