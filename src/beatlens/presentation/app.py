@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import json
 from pathlib import Path
 from typing import Any
 
@@ -138,6 +139,211 @@ def _compute_explanations(
     return explanations
 
 
+def _render_opentslm_results(st) -> None:
+    st.header("OpenTSLM · Cross-database T-peak localization")
+    st.caption(
+        "LUDB evaluation on 1,603 ECG windows from 200 records. The local timing head was "
+        "trained on QTDB and evaluated on LUDB without refitting."
+    )
+    metrics = st.columns(3)
+    metrics[0].metric("Mean absolute timing error", "18.60 ms", "−12.31 ms vs timing prior",
+                      delta_color="inverse")
+    metrics[1].metric("Predictions within 40 ms", "88.6%")
+    metrics[2].metric("Difference vs separate kernels · 95% CI", "−1.26 to −0.58 ms")
+    st.table({
+        "Model": ["Interaction-kernel OpenTSLM fusion", "Separate-kernel OpenTSLM fusion", "Joint-kernel OpenTSLM fusion", "Linear OpenTSLM fusion", "OpenTSLM local patch readout",
+                  "QTDB train-only timing prior",
+                  "OpenTSLM full-feature readout"],
+        "LUDB MAE (ms)": [18.60, 19.52, 19.90, 21.75, 26.26, 30.92, 33.49],
+    })
+    st.subheader("Does the prediction depend on the ECG?")
+    st.write(
+        "On 2,201 out-of-fold QTDB windows, interaction-kernel fusion reached 31.38 ms MAE. "
+        "Pairwise waveform swaps raised its error to 54.69 ms."
+    )
+    with st.expander("Model and evaluation details"):
+        st.write(
+            "The fusion model combines local features from a frozen OpenTSLM SoftPrompt waveform "
+            "encoder with raw ECG samples from the same interval. It uses a "
+            "readout with separate linear-plus-RBF kernels and their product, fitted on 376 QTDB windows. "
+            "The paired confidence interval resamples LUDB records. LUDB was evaluated "
+            "repeatedly during development. The interactive ECG explanations use the PyTorch locator."
+        )
+
+    st.subheader("What we built and tested")
+    st.write(
+        "Our QT Database connector prototype loaded 105 ECG records and "
+        "14,750 annotated localization tasks into a local TimeNet build."
+    )
+    st.markdown("[QTDB connector and validation results](https://github.com/mdhabibi/BeatLens/blob/main/integrations/timenet-connectors/README.md#validation-status)")
+    st.write(
+        "The separate LoRA pilot trained OpenTSLM on Nebius to generate a sample index. "
+        "In a matched repeat, the tuned model had 64.5 ms error with the original ECG "
+        "and the same 64.5 ms error when the ECGs were swapped between examples. "
+        "This test gave us no evidence that the generated index followed the waveform."
+    )
+    st.subheader("What changed on MIT-BIH?")
+    st.table({
+        "Model": ["OpenTSLM timing readout", "Waveform-only ranker (weighted median)"],
+        "LUDB MAE (ms)": [18.60, 11.08],
+        "MIT-BIH MAE (ms)": [51.54, 50.24],
+        "MIT-BIH errors over 80 ms": [453, 571],
+    })
+    st.write(
+        "On two difficult MIT-BIH recordings, 109 and 214, both OpenTSLM readouts "
+        "predicted more than 80 ms early on all 48 windows with manual T-peak times "
+        "after 345 ms. Those recordings were selected for failure analysis."
+    )
+
+
+def _render_opentslm_explanation(st) -> None:
+    import plotly.graph_objects as go
+    from plotly.subplots import make_subplots
+
+    st.header("OpenTSLM · Explain a T-peak prediction")
+    directory = _repository_root() / "outputs/qtdb-opentslm"
+    artifact = directory / "beatlens-opentslm-interaction-kernel-explanations.json"
+    if not artifact.is_file():
+        artifact = directory / "beatlens-opentslm-block-kernel-explanations.json"
+    if not artifact.is_file():
+        artifact = directory / "beatlens-opentslm-nonlinear-explanations.json"
+    if not artifact.is_file():
+        artifact = directory / "beatlens-opentslm-fusion-explanations.json"
+    if not artifact.is_file():
+        artifact = directory / "beatlens-opentslm-explanations.json"
+    if not artifact.is_file():
+        st.info("Copy the OpenTSLM explanation artifact into outputs/qtdb-opentslm to view this example.")
+        return
+    result = json.loads(artifact.read_text())
+    fusion = result.get("readout") == "fusion"
+    model_label = "OpenTSLM patches + raw ECG" if fusion else "OpenTSLM local patches"
+    if result.get("kernel") == "interaction_linear_rbf":
+        model_label = "Interaction-kernel OpenTSLM fusion"
+    elif result.get("kernel") == "separate_linear_rbf":
+        model_label = "Separate-kernel OpenTSLM fusion"
+    elif result.get("kernel") == "linear_rbf":
+        model_label = "Nonlinear OpenTSLM fusion"
+    st.caption(
+        f"Saved H100 inference for QTDB record {result['record']}, beat {result['beat']}. "
+        f"Readout: {model_label}."
+    )
+    metrics = st.columns(3)
+    metrics[0].metric("Predicted T peak", f"{result['prediction_ms']:.1f} ms")
+    metrics[1].metric("Annotated T peak", f"{result['reference_ms']:.1f} ms")
+    metrics[2].metric("Absolute timing error", f"{abs(result['prediction_ms'] - result['reference_ms']):.2f} ms")
+    waveform = np.asarray(result["waveform"])
+    fs, anchor = result["fs"], result["anchor"]
+    time = (np.arange(waveform.shape[-1]) - anchor) * 1000 / fs
+    lime, ig = result["waveform_lime"], result["patch_ig"]
+    lead_names = result.get("lead_names")
+    if lead_names is None and result["record"] == "sele0111":
+        # Verified against the QTDB record header.
+        lead_names = ("D3", "V4")
+    if lead_names is None:
+        lead_names = [f"Channel {i}" for i in range(1, len(waveform) + 1)]
+    st.write(
+        "The two traces show the same beat from two ECG leads. "
+        "The supplied R-peak anchor is at 0 ms. The manual T peak and the "
+        "model’s T-peak estimate are marked separately on both traces."
+    )
+    direction = "early" if result["prediction_ms"] < result["reference_ms"] else "late"
+    error = abs(result["prediction_ms"] - result["reference_ms"])
+    if error > 0:
+        st.caption(f"The model placed the T peak {error:.2f} ms {direction}.")
+
+    figure = make_subplots(
+        rows=4, cols=1, shared_xaxes=True,
+        subplot_titles=(
+            *lead_names, "LIME · effect of restoring a waveform segment",
+            "Integrated Gradients · contributions relative to the smoothed beat",
+        ),
+        row_heights=[0.28, 0.28, 0.22, 0.22],
+    )
+    guides = (
+        (0, "R anchor", "#64748b", "diamond"),
+        (result["reference_ms"], "Manual T peak", "#15803d", "circle"),
+        (result["prediction_ms"], "Predicted T peak", "#b91c1c", "x"),
+    )
+    for row, (channel, lead) in enumerate(zip(waveform, lead_names, strict=True), start=1):
+        figure.add_trace(go.Scatter(x=time, y=channel, name=lead, showlegend=False), row=row, col=1)
+        for marker_time, label, color, symbol in guides:
+            figure.add_vline(x=marker_time, line_dash="dot", line_color=color, row=row, col=1)
+            figure.add_trace(go.Scatter(
+                x=[marker_time], y=[np.interp(marker_time, time, channel)], name=label,
+                mode="markers", marker={"symbol": symbol, "size": 11, "color": color},
+                legendgroup=label, showlegend=row == 1,
+                hovertemplate="%{fullData.name} · %{x:.2f} ms<extra></extra>",
+            ), row=row, col=1)
+        figure.update_yaxes(title_text="Normalized", row=row, col=1)
+
+    score_series = (
+        (3, lime["signed_ms"], lime["segment_samples"], "#2563eb", "LIME segment effect"),
+        (4, ig["signed_ms"], ig["patch_samples"], "#7c3aed", "IG encoder features"),
+    )
+    for row, values, width, color, label in score_series:
+        starts = np.arange(len(values)) * width
+        ends = np.minimum(starts + width, waveform.shape[-1]) - 1
+        centers = ((starts + ends) / 2 - anchor) * 1000 / fs
+        figure.add_trace(go.Bar(
+            x=centers, y=values, width=0.9 * width * 1000 / fs, name=label,
+            marker_color=color, showlegend=row == 4 and fusion,
+        ), row=row, col=1)
+        figure.update_yaxes(title_text="Effect (ms)", zeroline=True, row=row, col=1)
+    if fusion:
+        starts = np.arange(len(ig["raw_signed_ms"])) * ig["patch_samples"]
+        centers = (starts + np.minimum(starts + ig["patch_samples"], waveform.shape[-1]) - 1) / 2
+        figure.add_trace(go.Scatter(
+            x=(centers - anchor) * 1000 / fs, y=ig["raw_signed_ms"],
+            mode="lines", name="IG raw ECG samples", line={"color": "#ea580c"},
+        ), row=4, col=1)
+    figure.update_xaxes(range=[-150, 500], tick0=0, dtick=50, showticklabels=True)
+    figure.update_xaxes(title_text="Time from the supplied R anchor (ms)", row=4, col=1)
+    figure.update_layout(height=820, legend={"orientation": "h", "y": 1.12})
+    st.plotly_chart(figure, width="stretch")
+
+    lime_scores = np.asarray(lime["signed_ms"])
+    strongest = int(np.argmax(np.abs(lime_scores)))
+    start = strongest * lime["segment_samples"]
+    end = min(start + lime["segment_samples"], len(time)) - 1
+    effect = lime_scores[strongest]
+    effect_direction = "later" if effect >= 0 else "earlier"
+    st.markdown(
+        "**LIME asks what changes when we blur a short piece of the ECG.** It runs the model "
+        "on many combinations of original and smoothed segments, then estimates each segment’s "
+        "local effect. "
+        f"For this beat, the strongest estimated effect is in **{time[start]:.0f}–"
+        f"{time[end]:.0f} ms**. Keeping the original segment is associated with a "
+        f"**{abs(effect):.2f} ms {effect_direction}** estimate in LIME’s local approximation."
+    )
+    baseline_prediction = result.get("baseline_prediction_ms")
+    ig_example = ""
+    if baseline_prediction is not None:
+        change = result["prediction_ms"] - baseline_prediction
+        change_direction = "later" if change >= 0 else "earlier"
+        ig_example = (
+            f" For this beat, the smoothed input gave **{baseline_prediction:.2f} ms** "
+            f"and the original gave **{result['prediction_ms']:.2f} ms**, "
+            f"a shift of **{abs(change):.2f} ms {change_direction}**."
+        )
+    st.markdown(
+        "**Integrated Gradients explains the change from the smoothed beat to the original.** "
+        "It traces that change through the timing readout’s inputs. Purple bars represent "
+        "encoder features" + (" and the orange line represents raw ECG samples." if fusion else ".")
+        + " Positive contributions push the estimate later. Negative contributions push it earlier."
+        + ig_example
+    )
+    st.caption(
+        "These plots show what influenced the model. Compare the red and green markers "
+        "to see how close the estimate is to the manual T-peak label."
+    )
+    with st.expander("Explanation quality checks"):
+        st.caption(
+            f"Reference input: {result['baseline']}. LIME weighted R²: {lime['weighted_r2']:.3f} "
+            f"over {lime['perturbations']} perturbations. Readout-input IG completeness residual: "
+            f"{ig['completeness_residual_ms']:.2g} ms."
+        )
+
+
 def _render() -> None:
     import plotly.graph_objects as go
     import streamlit as st
@@ -146,9 +352,18 @@ def _render() -> None:
 
     st.set_page_config(page_title="BeatLens T-peak XAI", page_icon="〰️", layout="wide")
     st.title("BeatLens · T-peak explanation lab")
+    view = st.radio(
+        "View", ("ECG explanations", "OpenTSLM results", "OpenTSLM explanation"), horizontal=True
+    )
+    if view == "OpenTSLM results":
+        _render_opentslm_results(st)
+        return
+    if view == "OpenTSLM explanation":
+        _render_opentslm_explanation(st)
+        return
     st.caption(
-        "Research prototype on public QTDB annotations. Explanations describe this model's output; "
-        "they are not clinical or causal evidence."
+        "Research prototype on public QTDB annotations. The interactive view explains "
+        "predictions from the BeatLens PyTorch locator."
     )
 
     root = _repository_root()

@@ -1,68 +1,55 @@
 # BeatLens
 
-**BeatLens is a research workbench for testing whether ECG model explanations are faithful, stable, and consistent with available signal annotations.**
+BeatLens is a research workbench for locating the **T-wave peak** in a two-channel ECG beat given a known **R-peak anchor**. It overlays the model estimate and the reference annotation, then shows which waveform regions influenced the estimate.
 
-The first release is scoped to the TimeNet hackathon. It will use public, documented ECG data; train or fine-tune a temporal model; compare it with a PyTorch baseline; and make the model's evidence regions inspectable.
+[Watch the TimeNet Hackathon 2026 demo](https://youtu.be/xKQMgWyghEw) · [Read the experiments](docs/opentslm-feasibility.md) · [Explore the QTDB connector](integrations/timenet-connectors/README.md)
 
-> **Research use only.** BeatLens is not a medical device and does not provide diagnosis or treatment recommendations. Model explanations describe model behavior; they do not establish clinical or causal reasons.
+## Results
 
-## Architecture
+All experiments below use supplied R anchors. Mean absolute error (MAE) is measured in milliseconds. The cross-database panels were used during development.
 
-```text
-BeatLens/
-├── configs/                  # Versioned experiment configuration
-├── data/                     # Local only; source data is never committed
-├── docs/                     # Architecture, data decisions, and evaluation protocol
-├── notebooks/                # Exploration only; reusable logic belongs in src/
-├── scripts/                  # Reproducible training and evaluation entry points
-└── src/beatlens/
-    ├── application/          # Use cases that orchestrate domain ports
-    ├── domain/               # Framework-independent records and result types
-    ├── evaluation/            # Predictive and explanation metrics
-    ├── explainers/            # LIME variants and attribution adapters
-    ├── infrastructure/        # PyTorch, TimeNet, and persistence adapters
-    └── presentation/         # Streamlit research demo
-```
+| Model | LUDB MAE (1,603 windows) | MIT-BIH errors over 80 ms (2,112 windows) |
+| --- | ---: | ---: |
+| Training-set timing prior | 30.92 ms | — |
+| OpenTSLM interaction-kernel readout shown in the demo | 18.60 ms | 453 |
+| Waveform-only candidate ranker | 11.08 ms | 571 |
 
-The old LIME project remains a historical reference. BeatLens starts as a separate package, with data access, models, explanation methods, evaluation, and presentation kept behind clear interfaces.
+The waveform-only ranker had the lowest average error on LUDB. The OpenTSLM readout made fewer large misses on the MIT-BIH pilot. The [beat-level audit](docs/opentslm-feasibility.md#beat-level-audit-on-mit-bih-records-109-and-214) shows examples where both OpenTSLM variants placed late peaks too early.
 
-## TimeNet integration
+## Models and explanations
 
-TimeNet standardizes and loads time-series data. BeatLens owns model training, inference, explanation, and evaluation. Dataset connectors belong in the TimeNet connector contribution; this repository will consume TimeNet datasets through an adapter rather than copy its engine or connector code. A QTDB connector prototype, shaped for TimeNet's connector package, is now in [`integrations/timenet-connectors`](integrations/timenet-connectors/README.md).
+- **Fine-tuning experiment.** We fine-tuned OpenTSLM SoftPrompt (Llama 3.2 1B) with LoRA on Nebius to generate the T-peak sample index. In the matched repeat, MAE stayed at 64.5 ms after swapping waveforms, leaving waveform dependence unverified. [Fine-tuning and waveform-swap control](docs/opentslm-feasibility.md#matched-prompt-waveform-control)
+- **Demo readout.** The numerical readout combines frozen OpenTSLM ECG patch features and local raw waveform samples. Separate kernels model similarity within each input, and their product captures interactions. We trained the readout on QTDB beat windows. [Model experiments](docs/opentslm-feasibility.md)
+- **Temporal LIME** replaces short ECG segments and fits a local approximation to the resulting changes in predicted time. **Integrated Gradients** traces how inputs contribute to the change in predicted timing from a reference to the original input. The saved OpenTSLM example uses feature and waveform inputs to the readout. [Explanation experiments](docs/xai-prototype.md)
 
-The connector targets TimeNet 0.12.0 at commit `9bd1613019ee61fbc52e02106a1a45990ead7a54`. QTDB is the distinct waveform-delineation dataset; the prototype preserves the full two-lead excerpts and emits sparse tasks only for observed fiducials. Its frozen split is the provisional known-subject-grouped BeatLens split, not a claim of complete patient-independent partitioning.
+## Run locally
 
-## Planned experiment
-
-1. Finish review and upstreaming of the QTDB connector prototype, preserving the provisional split caveat.
-2. Build the TimeF QTDB release and connect it through BeatLens's data adapter.
-3. Keep the PyTorch CNN as the runnable reference; the OpenTSLM QTDB data-format smoke check passed,
-   while model training is blocked on runtime/checkpoint readiness ([feasibility note](docs/opentslm-feasibility.md)).
-4. Implement ECG-aware perturbation LIME and compare it with one gradient-based attribution method.
-5. Report predictive performance, local explanation fidelity, stability, and annotation overlap where the annotations support that measurement.
-6. Add a small demo that displays a held-out public example and its model evidence.
-
-## Development
-
-Python 3.11 or newer is required. The project uses `uv` for a locked environment. TimeNet and OpenTSLM dependencies will be pinned after verifying the selected integration path and model access requirements.
-
-## Run the QTDB T-peak demo
-
-The local research demo needs the downloaded QTDB archive, the generated split, and the trained checkpoint. The split keeps documented same-subject European ST-T excerpts together; cross-database patient independence is still unverified. From the repository root:
+Install Python 3.11 or newer and `uv`. Run these commands from the repository root to open the results view or launch the locally trained PyTorch explanation workflow.
 
 ```sh
-uv sync --extra qtdb --extra demo
-uv run streamlit run src/beatlens/presentation/app.py
+uv sync --locked --extra qtdb --extra demo
+uv run --no-sync streamlit run src/beatlens/presentation/app.py
 ```
 
-The app compares Integrated Gradients and temporal LIME against the primary zero reference and a smoothed-waveform sensitivity reference. It also lets you replace top-ranked time bins and a matched random set, then inspect both altered waveforms and the model's prediction shifts. It uses validation records only. The test records were inspected during exploratory model comparison, so do not treat the earlier test metrics as an untouched final holdout.
+**OpenTSLM results** is available immediately. **OpenTSLM explanation** uses a saved inference artifact. To replay your own run, place the JSON output from `scripts/explain_qtdb_opentslm.py` in `outputs/qtdb-opentslm/beatlens-opentslm-interaction-kernel-explanations.json` for the interaction-kernel checkpoint. The video shows that workflow, and the experiment notes document the research runs. The **ECG explanations** view uses the separate PyTorch locator and can be set up locally using the steps below.
 
-## Data and privacy
+Download and extract [QT Database 1.0.0](https://physionet.org/content/qtdb/1.0.0/) so that `data/qt-database-1.0.0/` contains the record files. Run:
 
-- Do not commit downloaded ECG files, checkpoints, patient data, credentials, or local experiment outputs.
-- Preserve source attribution, license, access conditions, dataset version, and split methodology with each experiment.
-- The hackathon demo uses public validation examples only; it does not accept patient uploads.
+```sh
+uv run --no-sync python scripts/audit_qtdb.py
+uv run --no-sync python scripts/make_qtdb_split.py
+uv run --no-sync python scripts/train_qtdb_tpeak.py --output-dir outputs/qtdb-tpeak-known-subject-groups
+```
 
-## Status
+Open **ECG explanations** in Streamlit to inspect validation beats. The waveform plot marks the supplied R anchor at zero and displays the model and reference T peaks separately.
 
-QTDB annotation audit, a known-subject-grouped provisional split, a T-peak baseline, and an initial IG/LIME explanation comparison are in place. The local demo displays both explanation references and exposes baseline sensitivity for inspection. QTDB's TimeNet connector contribution and a genuinely untouched final evaluation cohort remain open work. See [the dataset decision note](docs/dataset-decision.md), [baseline results](docs/baseline-results.md), [XAI prototype](docs/xai-prototype.md), and [Round 1 plan](docs/round1-plan.md).
+## Data and repository guide
+
+- **QTDB** supplies training and development windows. The provisional split groups known same-subject excerpts. [Task and split](docs/qtdb-task-and-split.md)
+- **LUDB** and **MIT-BIH with separate manual T-peak labels** supply cross-database development panels. [Data decisions](docs/dataset-decision.md) · [Source and pilot details](docs/opentslm-feasibility.md)
+- **TimeNet integration** maps QTDB records into sparse localization tasks for observed fiducials. The connector prototype was validated locally with TimeNet 0.12.0. [Setup and validation](integrations/timenet-connectors/README.md#validation-status)
+- **Implementation** lives in `src/beatlens`. Training and evaluation entry points live in `scripts`. [Architecture](docs/architecture.md)
+
+**Research use only.** Results describe timing on selected beat windows with known R anchors. Clinical performance and end-to-end ECG delineation remain unvalidated.
+
+Built by **Dr. Mahdi Habibi** and **Dr. Sdjad Sadeghi** for the TimeNet Hackathon 2026.
