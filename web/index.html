@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Explore one ECG beat, compare T-peak timing predictions, and inspect what moved the estimate.">
   <title>BeatLens — ECG Timing Explorer</title>
+  <meta name="theme-color" content="#170e14">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BeatLens">
+  <meta property="og:title" content="BeatLens — Where did the T wave peak?">
+  <meta property="og:description" content="Explore one ECG beat, compare T-peak timing predictions, and inspect what moved the estimate. TimeNet Hackathon 2026.">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="style.css">
   <script type="module" src="explorer.js"></script>
 </head>
@@ -16,7 +23,7 @@
       <p class="eyebrow">TIMENET HACKATHON 2026</p>
       <h1>Where did the<br>T wave <em>peak?</em></h1>
       <p>Follow one ECG beat from a supplied R peak to a model estimate. Then see which parts of the signal moved the prediction.</p>
-      <a class="button" href="#explorer">Explore the beat <span aria-hidden="true">↓</span></a>
+      <div class="actions"><a class="button" href="#explorer">Explore the beat <span aria-hidden="true">↓</span></a><a class="button secondary" href="https://youtu.be/QsP-ktHCz0s">Watch the 2-minute demo <span aria-hidden="true">▶</span></a></div>
     </section>
     <section id="explorer" class="panel">
       <div class="section-header"><div><p class="eyebrow">QT DATABASE · SELE0111 · BEAT 11</p><h2>One beat, two leads</h2></div><p class="source">Saved model output</p></div>

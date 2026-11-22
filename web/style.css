@@ -73,3 +73,7 @@ nav { flex-wrap: wrap }
 #cursor-reading { margin-top: .5rem }
 .glossary dt { font-weight: 720; margin-top: .75rem }
 .glossary dd { color: var(--muted); margin: .16rem 0 0 }
+
+.actions { display: flex; flex-wrap: wrap; gap: .75rem }
+.button.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent) }
+.table-wrap th, .table-wrap td { white-space: nowrap }
