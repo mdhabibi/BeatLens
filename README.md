@@ -2,7 +2,13 @@
 
 BeatLens is a research workbench for locating the **T-wave peak** in a two-channel ECG beat given a known **R-peak anchor**. It overlays the model estimate and the reference annotation, then shows which waveform regions influenced the estimate.
 
-[Watch the TimeNet Hackathon 2026 demo](https://youtu.be/xKQMgWyghEw) · [Read the experiments](docs/opentslm-feasibility.md) · [Explore the QTDB connector](integrations/timenet-connectors/README.md)
+[Experiments](docs/opentslm-feasibility.md) · [TimeNet connector](integrations/timenet-connectors/README.md) · [MIT License](LICENSE)
+
+## Demo
+
+[![Watch the BeatLens demo for the TimeNet Hackathon 2026](https://i.ytimg.com/vi/xKQMgWyghEw/hqdefault.jpg)](https://youtu.be/xKQMgWyghEw)
+
+[Watch on YouTube](https://youtu.be/xKQMgWyghEw)
 
 ## Results
 
