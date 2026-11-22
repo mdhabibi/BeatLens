@@ -5,9 +5,9 @@ BeatLens is a research workbench for locating the **T-wave peak** in a two-chann
 [Experiments](docs/opentslm-feasibility.md) · [TimeNet connector](integrations/timenet-connectors/README.md) · [MIT License](LICENSE)
 
 ## Demo
-https://github.com/user-attachments/assets/710f9f75-2466-489d-ab03-85f88b7485a2
 
-[Watch on YouTube](https://youtu.be/QsP-ktHCz0s)
+
+https://github.com/user-attachments/assets/dfc9b926-f1e5-4a6e-9d80-2c60835b7ecd
 
 ## Results
 
