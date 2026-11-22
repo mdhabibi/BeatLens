@@ -7,6 +7,8 @@ BeatLens is a research workbench for locating the **T-wave peak** in a two-chann
 ## Demo
 https://github.com/user-attachments/assets/710f9f75-2466-489d-ab03-85f88b7485a2
 
+[Watch on YouTube](https://youtu.be/QsP-ktHCz0s)
+
 ## Results
 
 All experiments below use supplied R anchors. Mean absolute error (MAE) is measured in milliseconds. The cross-database panels were used during development.
